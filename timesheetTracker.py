@@ -72,6 +72,8 @@ class TimesheetTracker(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         layout = QVBoxLayout(central_widget)
+        layout.setContentsMargins(10, 10, 10, 10)  # Reduce bottom margin significantly
+        layout.setSpacing(5)  # Reduce spacing between elements
         
         # Create menu bar
         self.create_menu()
@@ -145,27 +147,23 @@ class TimesheetTracker(QMainWindow):
         # Disable full row selection
         self.tree.setSelectionBehavior(QTreeWidget.SelectionBehavior.SelectItems)
         
-        # Create status layout for total time and expected time
+        # Create status layout for total time and expected time as a single row
         status_layout = QHBoxLayout()
+        status_layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
+        status_layout.setSpacing(10)  # Reduce spacing between elements
         
-        # Create status area with vertical layout
-        status_area = QVBoxLayout()
-        
-        # Create total time label
+        # Create total time label (now includes project groups info)
         self.total_label = QLabel(f"Total Time: 0.0 hours (Billable: 0.0 hours)")
         
-        # Create project groups label
+        # Create project groups label (hidden, info moved to total_label)
         self.project_groups_label = QLabel("")
-        
-        # Add labels to status area
-        status_area.addWidget(self.total_label)
-        status_area.addWidget(self.project_groups_label)
+        self.project_groups_label.hide()  # Hide this label as we're not using it separately
         
         # Create expected time label (assuming 8:00 AM start)
         self.expected_time_label = QLabel("Expected Time: 8:00 AM")
         
-        # Add widgets to status layout
-        status_layout.addLayout(status_area)
+        # Add widgets to status layout as a single row
+        status_layout.addWidget(self.total_label)
         status_layout.addStretch()
         status_layout.addWidget(self.expected_time_label)
         
